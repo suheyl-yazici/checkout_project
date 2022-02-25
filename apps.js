@@ -5,25 +5,19 @@ window.addEventListener("load", ()=> {
     localStorage.setItem("taxRate", taxRate);
     localStorage.setItem("shippingPrice", shippingPrice);
     calculateCartTotal();
-    // sessionStorage.setItem("taxRate", taxRate);
-    // sessionStorage.setItem("shippingPrice", shippingPrice);
 });
-
 
 // capturing
 let productsDiv = document.querySelector(".products");
 productsDiv.addEventListener("click", (e)=> {
     let quantityP = e.target.parentElement.parentElement.querySelector("#product-quantity");
-// console.log(quantityP);
-    // console.log(e.target);
+
     // minus buttons 
     if (e.target.classList.contains("fa-minus") || e.target == quantityP.parentElement.firstElementChild){
         if(quantityP.innerText > 1){
             quantityP.innerText--;
             // calculateProductTotal
             calculateProductTotal(quantityP);
-            // calculateCartTotal product ve total ile çağırılıyor
-            // calculateCartTotal();
         } 
         else {
             if ( confirm("Product will be removed")){
@@ -32,16 +26,13 @@ productsDiv.addEventListener("click", (e)=> {
             calculateCartTotal();
             };
         }
-        // console.log("minus clicked");
     }
     // plus buttons
     else if (e.target.className == "fas fa-plus" || e.target == quantityP.parentElement.lastElementChild){
         quantityP.innerText++;
         // calculateProductTotal
         calculateProductTotal(quantityP);
-        // calculateCartTotal bunu çağırmana gerek yok
-        // calculateCartTotal();
-        // console.log("plusBtn clicked");
+
     }
     // remove buttons
     else if (e.target.className == "remove-product"){
@@ -49,11 +40,6 @@ productsDiv.addEventListener("click", (e)=> {
             quantityP.parentElement.parentElement.parentElement.remove();
             calculateCartTotal();
         }
-        
-        // calculateCartTotal
-        
-        // e.target.parentElement.parentElement.remove();
-        // console.log("remove button clicked");
     }
     // others 
     else{
@@ -61,15 +47,12 @@ productsDiv.addEventListener("click", (e)=> {
     }
 });
 
-
 const calculateProductTotal = (quantityP) => {
-    // console.log(quantityP.innerText);
     let productPrice = quantityP.parentElement.parentElement.querySelector("strong");
     let productTotalPriceDiv = quantityP.parentElement.parentElement.querySelector(".product-line-price");
     productTotalPriceDiv.innerText = (quantityP.innerText * productPrice.innerText).toFixed(2);
     calculateCartTotal();
 }
-
 
 const calculateCartTotal = () => {
     let productTotalPriceDivs = document.querySelectorAll(".product-line-price");
@@ -77,14 +60,11 @@ const calculateCartTotal = () => {
     productTotalPriceDivs.forEach(eachproductTotalPriceDiv=> {
         subtotal += parseFloat(eachproductTotalPriceDiv.innerText)
     });
-    console.log(subtotal);
+
     let taxPrice = subtotal * localStorage.getItem("taxRate");
-    console.log(taxPrice);
     let shipping = (subtotal > 0 ? parseFloat(localStorage.getItem("shippingPrice")) : 0);
-    console.log(shipping);
     let cartTotal = subtotal + taxPrice + shipping;
-    console.log(cartTotal);
-    
+
 
     document.querySelector("#cart-subtotal p:nth-child(2)").innerText = subtotal.toFixed(2);
     document.querySelector("#cart-tax p:nth-child(2)").innerText = taxPrice.toFixed(2);
